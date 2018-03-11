@@ -1,0 +1,203 @@
+body{
+	min-height: 85%;
+    position: relative;
+	margin : 0;
+	background-color : rgba(250, 250, 250, 255)
+}
+
+.header{
+	position : fixed;
+	width : 100%;
+	height : 60px;
+	background-color : #ffc100;
+	left : 0%;
+	top : 0%;
+	right : 0%;
+	box-shadow : 0 0 3px rgba(80, 80, 80, 255);
+}
+
+.body{
+	padding-bottom : 80px;
+}
+
+.footer footer{
+	position: absolute;
+	left : 0;
+	bottom: 0;
+	width: 100%;
+	height: 40px;
+	background-color : #ffc100;
+	text-align : center;
+	font-family : Calibri;
+	padding-top: 20px;
+	color : #008040;
+	box-shadow : 0 0 3px rgba(80, 80, 80, 255);
+}
+
+ul li{
+	display : inline;
+	cursor : pointer;
+	font-family : Calibri;
+	font-size : 120%;
+	background-color : #ffc100;
+	padding-top : 16px;
+	padding-bottom : 20px;
+	padding-left : 15px;
+	padding-right : 15px;
+	color : #008040;
+}
+
+input, select{
+	border-radius : 3px;
+	border : 0px;
+	box-shadow: 0px 0px 1px 1px #b0b0b0;
+	font-family : Calibri;
+	color : #606060;
+	font-size : 110%;
+	padding-left : 5px;
+	padding-right : 5px;
+}
+
+input:focus{
+	outline: none;
+	font-family : Calibri;
+	border : 2px #ffc100;
+	box-shadow: 0px 0px 2px 2px rgba(255,193,0,1);
+}
+
+select:focus{
+	outline: none;
+	border : 2px #ffc100;
+	box-shadow: 0px 0px 2px 2px rgba(255,193,0,1);
+}
+
+#enter-button{
+	width : 100px;
+	height : 59px;
+	position : absolute;
+	cursor : pointer;
+	top : 0;
+	right : 4%;
+}
+
+#enter-button span{
+	position : absolute;
+	right : 25px;
+	margin-top : 16px;
+	font-family : Calibri;
+	font-weight : bolder;
+	font-size : 120%;
+	color : #008040;
+}
+
+#header-menu-nickname{
+	position : absolute;
+	right : 180px;
+	font-family : Calibri;
+	text-decoration : underline;
+	font-size : 120%;
+	color : #008040;
+}
+
+#table-wrapper{
+	margin : auto;
+	margin-top : 70px;
+	border: 2px solid #00000000;
+}
+
+#table-data th{
+	padding-left : 8px;
+	padding-right : 8px;
+	padding-top : 3px;
+	padding-bottom : 3px;
+}
+#table-data table{
+	width : 750px;
+	border-radius : 10px;
+	font-family : Calibri;
+	color : #606060;
+	background-color : #ffffff;
+	border-collapse: collapse;
+	border: 2px solid #00000000;
+}
+
+#table-data td{
+	border: 1px solid #b0b0b0;
+	padding : 8px;
+	text-align : center;
+}
+
+#table-filter{
+	width : 200px;
+	border-radius : 10px;
+	font-family : Calibri;
+	color : #606060;
+	padding : 8px;
+}
+
+#table-filter label{
+	font-size : 110%;
+}
+
+#table-filter select {
+	width : 100%;
+}
+
+#table-edition{
+	position : absolute;
+	margin-top : 8px;
+	border-radius : 10px;
+	font-family : Calibri;
+	color : #606060;
+	width : 200px;
+	padding : 8px;
+}
+
+#table-edition select{
+	width : 100%;
+}
+
+#table-edition label{
+	font-size : 110%;
+}
+
+#table-edition-choosing{
+	width : 100%;
+}
+
+#greeting-label{
+	width : 100%;
+	height : 100%;
+	position : fixed;
+	margin-top : 10%;
+	font-family : Calibri;
+	font-size : 300%;
+	color : #008040;
+	text-align : center;
+	display : none;
+}
+
+#auth-form-wrapper{
+	font-family : Calibri;
+	color : #606060;
+	font-size : 110%;
+	width : 300px;
+	margin : auto;
+	margin-top : 60px;
+	border-radius : 5px;
+	padding : 10px;
+	border : 0px;
+}
+#register-form-wrapper{
+	font-family : Calibri;
+	color : #606060;
+	font-size : 110%;
+	width : 300px;
+	margin : auto;
+	margin-top : 60px;
+	border-radius : 5px;
+	padding : 10px;
+	border : 0px;
+	box-shadow : 1px 1px 1px 1px #b0b0b0;
+	background-color : #ffffff;
+}

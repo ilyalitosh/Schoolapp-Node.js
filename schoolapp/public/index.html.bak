@@ -1,0 +1,94 @@
+<html>
+	<head>
+		<meta charset="utf-8"></meta>
+		<title>Школа</title>
+		<link rel="stylesheet" type="text/css" href="http://192.168.1.105:4545/style.css"/>
+	</head>
+	<body>
+		<div class="header">
+			<div class="header-menu">
+				<div class="header-menu" id="header-menu-nickname">
+					Гость
+				</div>
+				<div id="enter-button" onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">
+					<span>Войти</span>
+				</div>
+				<ul>
+					<li onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">Учащиеся</li>
+					<li onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">Успеваемость</li>
+					<li onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">Хоз. оборудование</li>
+					<li onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">Сотрудники</li>
+				</ul>
+			</div>
+		</div>
+		<div class="body">
+			<table id="table-wrapper">
+				<tr>
+					<td id="table-data">
+						<table>
+							
+						</table>
+					</td>
+					<td valign="top" style="position:absolute;top:1.5px;margin-left:5px;">
+						<table style="position:fixed;">
+							<tr>
+								<td id="table-filter">
+									
+								</td>
+							</tr>
+							<tr>
+								<td id="table-edition">
+									
+								</td>
+							</tr>
+						</table>
+					</td>
+				</tr>
+			</table>
+			<table id="auth-form-wrapper">
+				
+			</table>
+			<!--<table id="register-form-wrapper">
+				<!--<tr>
+					<td style="font-size:115%;">
+						Регистрация успешно выполнена. Чтобы активировать аккаунт, обратитесь к администратору
+					</td>
+				</tr>--!>
+				<tr>
+					<td>
+						<input type="text" placeholder="логин" style="width:100%;height:30px;"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="password" placeholder="пароль" style="margin-top:5px;width:100%;height:30px;" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<select style="margin-top:5px;width:100%;height:30px;">
+							<option>завуч/директор</option>
+							<option>учитель физ-ры</option>
+							<option>учитель русск. языка</option>
+							<option>учитель бел. языка</option>
+							<option>учитель ин. языка</option>
+							<option>учитель математики</option>
+							<option>учитель истории</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<input type="button" style="margin-top:5px;width:100%;height:30px;" value="Зарегистрироваться"/>
+					</td>
+				</tr>
+			</table>-->
+			<label id="greeting-label">Добро пожаловать в систему <br> управления базой данных школы</label>
+		</div>
+		<div class="footer">
+			<footer>Web by Ilya Litosh © 2018</footer>
+		</div>
+		<script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+		<script src="http://192.168.1.105:4545/client_scripts.js"></script>
+	</body>
+</html>
