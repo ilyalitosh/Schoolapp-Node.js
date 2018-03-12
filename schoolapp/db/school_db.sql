@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Хост: 127.0.0.1:3306
--- Время создания: Мар 11 2018 г., 23:49
+-- Время создания: Мар 12 2018 г., 21:10
 -- Версия сервера: 5.7.19
 -- Версия PHP: 5.6.31
 
@@ -31,23 +31,24 @@ SET time_zone = "+00:00";
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE IF NOT EXISTS `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `login` varchar(40) NOT NULL,
-  `password` int(32) DEFAULT NULL,
+  `login` varchar(20) NOT NULL,
+  `password` int(26) NOT NULL,
   `perks` int(4) NOT NULL,
-  `active` int(2) DEFAULT NULL,
-  `session_key` varchar(16) NOT NULL,
+  `active` int(2) DEFAULT '0',
+  `session_key` varchar(17) DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11223345 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=11223348 DEFAULT CHARSET=utf8;
 
 --
 -- Дамп данных таблицы `accounts`
 --
 
 INSERT INTO `accounts` (`id`, `login`, `password`, `perks`, `active`, `session_key`) VALUES
-(1, 'admin', 25101996, 0, 1, '20CilqBEfCer8cni'),
-(2, '999', 111, 0, 0, ''),
-(3, '6565', 111, 0, 1, '4LRZ34KANC8UtOi7'),
-(4, '3434', 123, 0, 0, '');
+(1, 'admin', 25101996, 111, 1, 'cShJ4shEYpsD0JyK'),
+(2, '999', 111, 222, 0, ''),
+(3, '6565', 111, 333, 1, '2NbjSYB8V4uPHVWj'),
+(4, '3434', 123, 444, 0, ''),
+(11223346, 'vasyan', 1234, 444, 0, '');
 
 -- --------------------------------------------------------
 
@@ -144,14 +145,14 @@ CREATE TABLE IF NOT EXISTS `rights` (
   `right_value` int(3) NOT NULL,
   `right_title` varchar(45) CHARACTER SET utf8 DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=9 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=12 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `rights`
 --
 
 INSERT INTO `rights` (`id`, `right_value`, `right_title`) VALUES
-(1, 111, 'admin'),
+(1, 111, 'Admin'),
 (2, 222, 'завуч/директор'),
 (3, 333, 'учитель физ-ры'),
 (4, 444, 'учитель русск. языка'),
@@ -176,7 +177,7 @@ CREATE TABLE IF NOT EXISTS `students` (
   `letter_of_class` varchar(2) CHARACTER SET utf8 NOT NULL,
   `address` varchar(40) CHARACTER SET utf8 NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `students`
@@ -224,7 +225,8 @@ INSERT INTO `students` (`id`, `first_name`, `second_name`, `birthday`, `class`, 
 (40, 'Василий', 'Петрович', '2004-01-26', 6, 'А', 'ул.Дерна,15 кв.190'),
 (39, 'Black', 'Star', '2004-05-10', 6, 'А', 'ул.Чёрных фонарей,14 кв.147'),
 (41, 'Василиса', 'Панина', '2004-09-26', 6, 'А', 'ул.Деревянная,25 кв.19'),
-(43, 'Александр', 'Сергеев', '2000-05-25', 8, 'Г', 'ул. Пульмана,44 кв. 86');
+(43, 'Александр', 'Сергеев', '2000-05-25', 8, 'Г', 'ул. Пульмана,44 кв. 86'),
+(44, 'Бронислав', 'Святой', '1997-10-29', 10, 'Б', 'ул. Уличная, 44 кв.14');
 
 -- --------------------------------------------------------
 
@@ -245,7 +247,7 @@ CREATE TABLE IF NOT EXISTS `student_progress` (
   `History` int(2) DEFAULT '0',
   `Average_value` float DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=44 DEFAULT CHARSET=latin1;
+) ENGINE=MyISAM AUTO_INCREMENT=45 DEFAULT CHARSET=latin1;
 
 --
 -- Дамп данных таблицы `student_progress`
@@ -293,7 +295,8 @@ INSERT INTO `student_progress` (`id`, `Maths`, `Russian`, `Belarussian`, `Russia
 (39, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (40, 0, 0, 0, 0, 0, 0, 0, 0, 0),
 (41, 0, 0, 0, 0, 0, 0, 0, 0, 0),
-(43, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+(43, 0, 0, 0, 0, 0, 0, 0, 0, 0),
+(44, 6, 6, 6, 6, 6, 6, 6, 7, 6.125);
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
