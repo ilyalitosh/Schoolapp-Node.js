@@ -235,6 +235,7 @@ $("div.header-menu ul li:eq(0)").click(function(e){
 			document.getElementById("table-data").getElementsByTagName("table")[0].innerHTML = data.tableData;
 			document.getElementById("table-filter").innerHTML = data.tableFilterData;
 			document.getElementById("table-data").getElementsByTagName("table")[0].style.boxShadow = "1px 1px 1px 1px #b0b0b0";
+			document.getElementById("table-data").getElementsByTagName("table")[0].style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 			document.getElementById("auth-form-wrapper").style.boxShadow = "";
@@ -262,6 +263,7 @@ $("div.header-menu ul li:eq(1)").click(function(e){
 			document.getElementById("table-data").getElementsByTagName("table")[0].innerHTML = data.tableData;
 			document.getElementById("table-filter").innerHTML = data.tableFilterData;
 			document.getElementById("table-data").getElementsByTagName("table")[0].style.boxShadow = "1px 1px 1px 1px #b0b0b0";
+			document.getElementById("table-data").getElementsByTagName("table")[0].style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 			document.getElementById("auth-form-wrapper").style.boxShadow = "";
@@ -289,6 +291,7 @@ $("div.header-menu ul li:eq(2)").click(function(e){
 			document.getElementById("table-data").getElementsByTagName("table")[0].innerHTML = data.tableData;
 			document.getElementById("table-filter").innerHTML = data.tableFilterData;
 			document.getElementById("table-data").getElementsByTagName("table")[0].style.boxShadow = "1px 1px 1px 1px #b0b0b0";
+			document.getElementById("table-data").getElementsByTagName("table")[0].style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 			document.getElementById("auth-form-wrapper").style.boxShadow = "";
@@ -316,6 +319,7 @@ $("div.header-menu ul li:eq(3)").click(function(e){
 			document.getElementById("table-data").getElementsByTagName("table")[0].innerHTML = data.tableData;
 			document.getElementById("table-filter").innerHTML = data.tableFilterData;
 			document.getElementById("table-data").getElementsByTagName("table")[0].style.boxShadow = "1px 1px 1px 1px #b0b0b0";
+			document.getElementById("table-data").getElementsByTagName("table")[0].style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.backgroundColor = "#ffffff";
 			document.getElementById("table-filter").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 			document.getElementById("auth-form-wrapper").style.boxShadow = "";
@@ -330,8 +334,62 @@ $("div.header-menu ul li:eq(3)").click(function(e){
 		}
 	});
 });
+var pressedCountEnter = 0;
+function consoleHandler(event){
+	if($("#admin-console")[0].innerText.length < 2){
+		$("#admin-console")[0].innerHTML = ">&nbsp;";
+		setKaretka($("#admin-console")[0], 0);
+	}
+	if(event.keyCode == 13){
+		var value = $("div #admin-console")[0].innerHTML;
+		var valueToSend = value.replace("<div><br></div>", "").replace("&nbsp;","").replace("&gt; ", "").replace(">","");		
+		//console.log(valueToSend.length + " " + valueToSend + " " + value);
+		console.log(valueToSend);
+		if(pressedCountEnter == 0){
+			$.ajax({
+				type : "POST",
+				url : "/admin/console",
+				data : JSON.stringify({
+					sqlRequest : valueToSend,
+					sessionKey : localStorage.getItem("session-key")
+					}),
+				dataType : "json",
+				contentType : "application/json",
+				success : function(data){
+					if(data.success){
+						var value1 = "";
+						var keys = Object.keys(data.data[0]);
+						for(let i = 0; i < data.fields.length; i++){
+							value1 += keys[i] + ", ";
+						}
+						value1 += "<br>";
+						for(let i = 0; i < data.data.length; i++){
+							for(let j = 0; j < data.fields.length; j++){
+								value1 += (data.data[i][keys[j]] + ", ");
+							}
+							value1 += "<br>";
+						}
+						$("#admin-console")[0].innerHTML += value1;
+						$("#admin-console")[0].innerHTML += "<br>>&nbsp;Запрос успешно выполнен. Для продолжения нажмите Enter";
+						var v1 = $("#admin-console br").length;
+						var v2 = v1 * 2;
+						setKaretka($("#admin-console")[0], v2-1);
+					}else{
+						$("#admin-console")[0].innerHTML = value + "<br>>&nbsp;Ошибка запроса. Для продолжения нажмите Enter";
+						setKaretka($("#admin-console")[0], 2);
+					}
+				}
+			});
+			pressedCountEnter = 1;
+		}else{
+			$("#admin-console")[0].innerHTML = ">&nbsp;";
+			pressedCountEnter = 0;
+			setKaretka($("#admin-console")[0], 0);
+		}
+	}
+}
 $("#enter-button").click(function(e){
-	$("title")[0].innerHTML = $("#enter-button")[0].innerHTML;
+	$("title")[0].innerHTML = "Войти";
 	var sessionKey = localStorage.getItem("session-key");
 	$.ajax({
 		type : "POST",
@@ -350,6 +408,9 @@ $("#enter-button").click(function(e){
 				document.getElementById("auth-form-wrapper").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 				document.getElementById("auth-form-wrapper").style.backgroundColor = "#ffffff";
 				document.getElementById("auth-form-wrapper").innerHTML = data.dataAuthForm;
+				document.getElementById("register-form-wrapper").innerHTML = "";
+				document.getElementById("register-form-wrapper").style.boxShadow = "";
+				document.getElementById("register-form-wrapper").style.backgroundColor = "";
 			}else{
 				localStorage.removeItem("session-key");
 				$("#header-menu-nickname")[0].innerHTML = "Гость";
@@ -366,10 +427,56 @@ $("#enter-button").click(function(e){
 				document.getElementById("auth-form-wrapper").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
 				document.getElementById("auth-form-wrapper").style.backgroundColor = "#ffffff";
 				document.getElementById("auth-form-wrapper").innerHTML = data.dataAuthForm;
+				document.getElementById("register-form-wrapper").innerHTML = "";
+				document.getElementById("register-form-wrapper").style.boxShadow = "";
+				document.getElementById("register-form-wrapper").style.backgroundColor = "";
+				$("div.header-menu ul li:eq(4)").remove();
 			}
 		}
 	});
 });
+function showRegisterForm(e){
+	e.blur();
+	$.ajax({
+		type : "GET",
+		url : "/register",
+		dataType : "json",
+		contentType : "application/json",
+		success : function(data){
+			document.getElementById("auth-form-wrapper").style.boxShadow = "";
+			document.getElementById("auth-form-wrapper").style.backgroundColor = "";
+			document.getElementById("auth-form-wrapper").innerHTML = "";
+			document.getElementById("register-form-wrapper").innerHTML = data.data;
+			document.getElementById("register-form-wrapper").style.boxShadow = "1px 1px 1px 1px #b0b0b0";
+			document.getElementById("register-form-wrapper").style.backgroundColor = "#ffffff";
+		}
+	});
+}
+function sendRedisterData(e){
+	e.blur();
+	$("#register-data-register-fail-message")[0].innerHTML = " ";
+	var login = $("#register-data-login")[0].value;
+	var pass = $("#register-data-pass")[0].value;
+	if(login == "" || pass == ""){
+		$("#register-data-register-fail-message")[0].innerHTML = "Какое-то из полей пустое";
+	}else{
+		var selectedItem = $("#register-form-wrapper tr td select")[0].selectedIndex;
+		$.ajax({
+			type : "POST",
+			url : "/register/tryRegister",
+			data : JSON.stringify({login : login, pass : pass, item : selectedItem}),
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data){
+				if(data.success){
+					document.getElementById("register-form-wrapper").innerHTML = data.data;
+				}else{
+					$("#register-data-register-fail-message")[0].innerHTML = data.data;
+				}
+			}
+		});
+	}
+}
 function sendAuthData(e){
 	e.blur();
 	var login = $("#auth-data-login")[0].value;
@@ -388,11 +495,59 @@ function sendAuthData(e){
 			}else{
 				//console.log(data.message + ", ключ сессии: " + data.sessionKey + " success: " + data.success);
 				localStorage.setItem("session-key", data.sessionKey);
-				$("#header-menu-nickname")[0].innerHTML = data.nickname;
+				$("#header-menu-nickname-name")[0].innerText = data.nickname;
+				$("#header-menu-nickname-type")[0].innerText = data.nameType;
 				$("#enter-button")[0].innerHTML = "<span>Выйти</span>";
 				$("div.header-menu ul li:eq(0)").click();
+				if(data.successAdmin){
+					admin();
+				}
 			}			
 		}
+	});
+}
+function setKaretka(elem, index){
+	var range = document.createRange();
+	var sel = window.getSelection();
+	range.setStart(elem.childNodes[index], elem.childNodes[index].length);
+	range.collapse(true);
+	sel.removeAllRanges();
+	sel.addRange(range);
+}
+function admin(){
+	var mainUl = $("div.header-menu ul")[0];
+	var elemLi = document.createElement("li");
+	mainUl.appendChild(elemLi);
+	$("div.header-menu ul li:eq(4)").attr("onmouseover", "elemFocused(this)");
+	$("div.header-menu ul li:eq(4)").attr("onmouseout", "elemLostFocused(this)");
+	$("div.header-menu ul li:eq(4)").attr("class", "header-menu");
+	$("div.header-menu ul li:eq(4)").attr("onclick", "menuItemClicked(this)");
+	$("div.header-menu ul li:eq(4)")[0].innerHTML = "Консоль";
+	$("div.header-menu ul li:eq(4)").click(function(e){
+		$.ajax({
+			type : "GET",
+			url : "/admin/consoleform",
+			dataType : "json",
+			contentType : "application/json",
+			success : function(data){
+				$("title")[0].innerHTML = $("div.header-menu ul li:eq(4)")[0].innerHTML;
+				document.getElementById("greeting-label").style.display = "none";
+				document.getElementById("table-filter").innerHTML = "";
+				document.getElementById("table-data").getElementsByTagName("table")[0].style.boxShadow = "";
+				document.getElementById("table-filter").style.backgroundColor = "";
+				document.getElementById("table-filter").style.boxShadow = "";
+				document.getElementById("auth-form-wrapper").style.boxShadow = "";
+				document.getElementById("auth-form-wrapper").style.backgroundColor = "";
+				document.getElementById("auth-form-wrapper").innerHTML = "";
+				document.getElementById("table-edition").innerHTML = "";
+				document.getElementById("table-edition").style.backgroundColor = "";
+				document.getElementById("table-edition").style.boxShadow = "";
+				document.getElementById("table-data").getElementsByTagName("table")[0].style.backgroundColor = "#00000000";
+				document.getElementById("table-data").getElementsByTagName("table")[0].innerHTML = data.consoleForm;
+				$("div #admin-console")[0].focus();
+				setKaretka($("div #admin-console")[0], 0);
+			}
+		});
 	});
 }
 function elemFocused(e){
@@ -420,6 +575,7 @@ function menuItemClicked(e){
 	e.className = "header-menu-clicked";
 	e.style.boxShadow = "0 2px #008040";
 }
+
 window.onload = function(){
 	var sessionKey = localStorage.getItem("session-key");
 	$.ajax({
@@ -431,8 +587,11 @@ window.onload = function(){
 		success : function(data){
 			if(!data.success){
 			}else{
-				$("#header-menu-nickname")[0].innerHTML = data.nickname;
+				//$("#header-menu-nickname")[0].innerHTML = data.nickname;
 				$("#enter-button")[0].innerHTML = "<span>Выйти</span>";
+				if(data.successAdmin){
+					admin();
+				}
 			}
 		}
 	});

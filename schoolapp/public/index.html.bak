@@ -8,7 +8,7 @@
 		<div class="header">
 			<div class="header-menu">
 				<div class="header-menu" id="header-menu-nickname">
-					Гость
+					<span id="header-menu-nickname-name">Гость</span><span id="header-menu-nickname-type" style="font-weight : bolder;"></span>
 				</div>
 				<div id="enter-button" onmouseover="elemFocused(this)" onmouseout="elemLostFocused(this)" class="header-menu" onclick="menuItemClicked(this)">
 					<span>Войти</span>
@@ -48,41 +48,9 @@
 			<table id="auth-form-wrapper">
 				
 			</table>
-			<!--<table id="register-form-wrapper">
-				<!--<tr>
-					<td style="font-size:115%;">
-						Регистрация успешно выполнена. Чтобы активировать аккаунт, обратитесь к администратору
-					</td>
-				</tr>--!>
-				<tr>
-					<td>
-						<input type="text" placeholder="логин" style="width:100%;height:30px;"/>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="password" placeholder="пароль" style="margin-top:5px;width:100%;height:30px;" />
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<select style="margin-top:5px;width:100%;height:30px;">
-							<option>завуч/директор</option>
-							<option>учитель физ-ры</option>
-							<option>учитель русск. языка</option>
-							<option>учитель бел. языка</option>
-							<option>учитель ин. языка</option>
-							<option>учитель математики</option>
-							<option>учитель истории</option>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td>
-						<input type="button" style="margin-top:5px;width:100%;height:30px;" value="Зарегистрироваться"/>
-					</td>
-				</tr>
-			</table>-->
+			<table id="register-form-wrapper">
+				
+			</table>
 			<label id="greeting-label">Добро пожаловать в систему <br> управления базой данных школы</label>
 		</div>
 		<div class="footer">

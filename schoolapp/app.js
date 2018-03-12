@@ -30,7 +30,11 @@ app.use(function(request, response, next){
 	   request.url != "/applyEditionAdd" &&
 	   request.url != "/applyEditionDelete" &&
 	   request.url != "/dinamicSearchEditing" &&
-	   request.url != "/applyEditionUpdate"){
+	   request.url != "/applyEditionUpdate" &&
+	   request.url != "/register" &&
+	   request.url != "/register/tryRegister" &&
+	   request.url != "/admin/console" &&
+	   request.url != "/admin/consoleform"){
 		var newData = fs.readFileSync("./public/error.html", "utf8");
 		response.end(newData);
 	}
@@ -51,6 +55,93 @@ app.get("/client_scripts.js", function(request, response){
 	response.writeHead(200, {"Content-Type": "text/javascript"});
     response.write(fs.readFileSync("./public/js/client_scripts.js", "utf8"));
     response.end();
+});
+app.get("/admin/consoleform", function(request, response){
+	var consoleForm = "<tr align=\"left\" style=\"background-color:#00000000;\">" + 
+						"<td >" + 
+							"<div contenteditable=\"true\" id=\"admin-console\" onkeyup=\"consoleHandler(event)\">>&nbsp;</div>" + 
+						"</td>" + 
+					"</tr>";
+	response.json({consoleForm : consoleForm});
+});
+app.post("/admin/console", jsonParser, function(request, response){
+	console.log("[Server]: получаю POST запрос /admin/console");
+	dbConnection.query("SELECT * FROM accounts WHERE session_key=\"" + request.body.sessionKey + "\"", function(error, result, fields){
+		try{
+			if(result[0].perks == 111){
+				console.log(request.body.sqlRequest);
+				dbConnection.query(request.body.sqlRequest, function(error, result, fields){
+					if(error){
+						response.json({success : false});
+					}else{
+						response.json({success : true, data : result, fields : fields});
+					}
+				});
+			}
+		}catch(ex){
+			console.log("Error! - 1001");
+		}
+	});
+});
+app.post("/register/tryRegister", jsonParser, function(request, response){
+	dbConnection.query("SELECT * FROM accounts WHERE login=\"" + request.body.login + "\"", function(error, result, fields){
+		try{
+			var check = result[0].login;
+			response.json({data : "Такой логин уже существует", succes : false});
+		}catch(ex){
+			var perks = new Number(request.body.item) + new Number(2);
+			dbConnection.query("SELECT * FROM rights WHERE id=" + perks, function(error, result, fields){
+				if(!error){
+					dbConnection.query("INSERT INTO accounts(login, password, perks) VALUES (\"" + request.body.login + "\",\"" + request.body.pass + "\"," + result[0].right_value + ")", function(error, result, fields){
+						if(!error){
+							var message = "<tr>" + 
+												"<td style=\"font-size:115%;\">" +
+													"Регистрация успешно выполнена. Чтобы активировать аккаунт, обратитесь к администратору" +
+												"</td>" + 
+										  "</tr>";
+							response.json({data : message, success : true});
+						}
+					});
+				}
+			});
+		}
+	});
+});
+app.get("/register", function(request, response){
+	var registerForm = "<tr>" + 
+							"<td>" +
+								"<input type=\"text\" id=\"register-data-login\" placeholder=\"логин\" style=\"width:100%;height:30px;\"/>" +
+							"</td>" + 
+						"</tr>" +
+						"<tr>" +
+							"<td>" + 
+								"<input type=\"password\" id=\"register-data-pass\" placeholder=\"пароль\" style=\"margin-top:5px;width:100%;height:30px;\" />" +
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td>" +
+								"<select style=\"margin-top:5px;width:100%;height:30px;\">" +
+									"<option>завуч/директор</option>" +
+									"<option>учитель физ-ры</option>" +
+									"<option>учитель русск. языка</option>" +
+									"<option>учитель бел. языка</option>" +
+									"<option>учитель ин. языка</option>" +
+									"<option>учитель математики</option>" +
+									"<option>учитель истории</option>" +
+								"</select>" +
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td>" +
+								"<label id=\"register-data-register-fail-message\" style=\"color:red;\"></label>" +
+							"</td>" +
+						"</tr>" +
+						"<tr>" +
+							"<td>" +
+								"<input type=\"button\" id=\"register-data-send-button\" style=\"margin-top:5px;width:100%;height:30px;\" onclick=\"sendRedisterData(this)\" value=\"Зарегистрироваться\"/>" +
+							"</td>" +
+						"</tr>";
+	response.json({data : registerForm});
 });
 app.post("/auth", jsonParser, function(request, response){
 	console.log("[Server]: получаю POST запрос /auth");
@@ -76,14 +167,19 @@ app.post("/auth", jsonParser, function(request, response){
 							"<input type=\"button\" id=\"auth-data-send-button\" style=\"width:100%;height:40px;margin-top:5px;cursor:pointer;\" value=\"Вход\" onclick=\"sendAuthData(this)\"/>" + 
 						"</td>" + 
 						"<td style=\"width:60%;\">" + 
-							"<input type=\"button\" style=\"width:100%;height:40px;margin-top:5px;cursor:pointer;\" value=\"Регистрация\" onclick=\"this.blur()\"/>" + 
+							"<input type=\"button\" style=\"width:100%;height:40px;margin-top:5px;cursor:pointer;\" value=\"Регистрация\" onclick=\"showRegisterForm(this)\"/>" + 
 						"</td>" + 
 					"</tr>";
-	dbConnection.query("SELECT session_key, login FROM accounts", function(error, result, fields){
+	dbConnection.query("SELECT session_key, login, perks FROM accounts", function(error, result, fields){
 		for(let i = 0; i < result.length; i++){
 			if(result[i].session_key == request.body.sessionKey){
-				response.json({dataAuthForm : authForm, success : true, nickname : result[i].login});
-				break;
+				if(result[i].perks == 111){
+					response.json({dataAuthForm : authForm, success : true, successAdmin : true, nickname : result[i].login});
+					break;
+				}else{
+					response.json({dataAuthForm : authForm, success : true, successAdmin : false, nickname : result[i].login});
+					break;
+				}
 			}
 			if(i == result.length - 1){
 				response.json({dataAuthForm : authForm, success : false});
@@ -101,21 +197,52 @@ app.post("/auth/identif", jsonParser, function(request, response){
 				if(result[i].login == request.body.login){
 					if(result[i].password == request.body.pass){
 						if(result[i].active == 1){
-							var key = kg.generateSessionKey();
-							dbConnection.query("UPDATE accounts SET session_key=\"" + key + "\" WHERE id=" + result[i].id);
-							response.json({message : "Успешная авторизация", nickname : result[i].login, sessionKey : key, success : true});
+							if(result[i].perks == 111){
+								var keyAdmin = kg.generateSessionKey();
+								dbConnection.query("UPDATE accounts SET session_key=\"" + keyAdmin + "\" WHERE id=" + result[i].id);
+								var dataConsole = "<li onmouseover=\"elemFocused(this)\" onmouseout=\"elemLostFocused(this)\" class=\"header-menu\" onclick=\"menuItemClicked(this)\">Консоль</li>";
+								response.json({
+									message : "Успешная авторизация",
+									nickname : result[i].login,
+									sessionKey : keyAdmin,
+									success : true,
+									successAdmin : true
+									});
+								break;
+							}else{
+								var key = kg.generateSessionKey();
+								dbConnection.query("UPDATE accounts SET session_key=\"" + key + "\" WHERE id=" + result[i].id);
+								dbConnection.query("SELECT * FROM rights WHERE right_value=" + result[i].perks, function(error, result1, fields){
+									response.json({
+									message : "Успешная авторизация",
+									nickname : result[i].login,
+									sessionKey : key,
+									success : true,
+									successAdmin : false
+									});
+								});
 							break;
+							}
 						}else{
-							response.json({message : "Аккаунт не активирован, обратитесь к администратору", success : false});
+							response.json({
+								message : "Аккаунт не активирован, обратитесь к администратору",
+								success : false
+								});
 							break;
 						}
 					}else{
-						response.json({message : "Неверный пароль", success : false});
+						response.json({
+							message : "Неверный пароль",
+							success : false
+							});
 						break;
 					}
 				}
 				if(i == result.length - 1){
-					response.json({message : "Пользователя не существует", success : false});
+					response.json({
+						message : "Пользователя не существует",
+						success : false
+						});
 				}
 			}
 		}

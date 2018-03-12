@@ -47,6 +47,23 @@ ul li{
 	color : #008040;
 }
 
+#admin-console{
+	width : 900px;
+	overflow: auto;
+	height : 600px;
+	text-align : left;
+	border: none;
+	outline : none;
+	border-radius : 5px;
+	background-color:#000000;
+	padding : 8px;
+	color:#ffffff;
+}
+
+textarea.radius{
+	border-radius: 5px;
+}
+
 input, select{
 	border-radius : 3px;
 	border : 0px;
@@ -193,10 +210,7 @@ select:focus{
 	font-size : 110%;
 	width : 300px;
 	margin : auto;
-	margin-top : 60px;
 	border-radius : 5px;
 	padding : 10px;
 	border : 0px;
-	box-shadow : 1px 1px 1px 1px #b0b0b0;
-	background-color : #ffffff;
 }
