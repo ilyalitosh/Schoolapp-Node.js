@@ -1,3 +1,3 @@
 # Schoolapp-Node.js
 
-![1,2](screenshots/1.png)(screenshots/1.png)
+!![1](screenshots/1.png)(screenshots/1.png)
